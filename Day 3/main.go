@@ -87,13 +87,7 @@ func main() {
 
 	for x := 0; x < len(og[0]); x++ {
 		mostCommon := get_bit(og, x, true)
-		var og_ []string
-		for _, line := range og {
-			if []rune(line)[x] == mostCommon {
-				og_ = append(og_, line)
-			}
-		}
-		og = og_
+		og = get_valid(og, x, mostCommon)
 		if len(og) == 1 {
 			break
 		}
@@ -101,13 +95,7 @@ func main() {
 
 	for x := 0; x < len(cs[0]); x++ {
 		leastCommon := get_bit(cs, x, false)
-		var cs_ []string
-		for _, line := range cs {
-			if []rune(line)[x] == leastCommon {
-				cs_ = append(cs_, line)
-			}
-		}
-		cs = cs_
+		cs = get_valid(cs, x, leastCommon)
 		if len(cs) == 1 {
 			break
 		}
