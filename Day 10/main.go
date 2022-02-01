@@ -11,7 +11,6 @@ type Stack []rune
 
 func (s *Stack) Push(char rune) {
 	*s = append(*s, char)
-	// s = &arr
 }
 
 func (s *Stack) Pop() rune {
