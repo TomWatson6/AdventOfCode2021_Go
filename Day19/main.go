@@ -255,7 +255,7 @@ func (s ScannerTree) GetAbsolutePositions(p Beacon) Beacons {
 	return positions
 }
 
-func RunPart1() {
+func main() {
 	scanners := getInput("Day19/input.txt")
 
 	start := time.Now()
@@ -325,8 +325,4 @@ func RunPart1() {
 	} else {
 		panic("No scanners found in file")
 	}
-}
-
-func main() {
-	RunPart1()
 }
