@@ -131,8 +131,8 @@ func getInput(fileName string) []Scanner {
 			parts = strings.Split(scannerPart, "\n")
 		}
 		idString := parts[0]
-		idString = strings.TrimLeft(idString, "--- scanner ")
-		idString = strings.TrimRight(idString, " ---")
+		idString = strings.Replace(idString, "--- scanner ", "", -1)
+		idString = strings.Replace(idString, " ---", "", -1)
 		id, err := strconv.Atoi(idString)
 		if err != nil {
 			panic(err)
