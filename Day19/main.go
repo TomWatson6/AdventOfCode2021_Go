@@ -256,7 +256,7 @@ func (s ScannerTree) GetAbsolutePositions(p Beacon) Beacons {
 }
 
 func main() {
-	scanners := getInput("Day19/input.txt")
+	scanners := getInput("input.txt")
 
 	start := time.Now()
 	if len(scanners) > 0 {
