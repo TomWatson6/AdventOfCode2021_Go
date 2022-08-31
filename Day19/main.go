@@ -192,7 +192,6 @@ func (s ScannerTree) Print(level int) {
 
 func (s *ScannerTree) AddChild(child *ScannerTree) bool {
 	if ok := s.ScannersTried[child.Id]; !ok {
-		// ctx, cancel := context.WithCancel(context.Background())
 		for _, r := range child.Scanner.Rotations {
 			if relPos, count := s.Scanner.Beacons.GetMatches(r); count >= 12 {
 				child.Position = relPos
@@ -294,6 +293,8 @@ func main() {
 			for i := len(toRemove) - 1; i >= 0; i-- {
 				trees = append(trees[:toRemove[i]], trees[toRemove[i]+1:]...)
 			}
+
+			fmt.Printf("Trees Remaining: %d\n", len(trees))
 		}
 
 		_, count := scannerTree.GetBeacons()
