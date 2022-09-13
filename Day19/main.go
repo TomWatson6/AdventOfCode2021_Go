@@ -227,13 +227,7 @@ func (s ScannerTree) GetBeacons() (map[Beacon]bool, int) {
 		}
 	}
 
-	count := 0
-
-	for i := 0; i < len(beacons); i++ {
-		count += 1
-	}
-
-	return beacons, count
+	return beacons, len(beacons)
 }
 
 func (s ScannerTree) GetAbsolutePositions(p Beacon) Beacons {
