@@ -9,7 +9,6 @@ import (
 )
 
 var commands []command
-
 var found []string
 
 type computer struct {
@@ -45,7 +44,7 @@ type outcome struct {
 
 var DP = make(map[state]outcome)
 
-func search(trace string, depth, opIndex, wValue, xValue, yValue, zValue int) (bool, string) {
+func search(trace string, depth, opIndex, wValue, xValue, yValue, zValue int, inc bool) (bool, string) {
 	s := state{
 		depth: depth,
 		w:     wValue,
@@ -84,14 +83,29 @@ func search(trace string, depth, opIndex, wValue, xValue, yValue, zValue int) (b
 	c := commands[opIndex]
 	value := evaluate(values, c.right)
 
+	start := 9
+	end := func(s int) bool {
+		if inc {
+			return s <= 9
+		} else {
+			return s >= 1
+		}
+	}
+	delta := -1
+
+	if inc {
+		start = 1
+		delta = 1
+	}
+
 	switch c.code {
 	case inp:
-		for i := 1; i < 10; i++ {
+		for i := start; end(i); i += delta {
 			values[c.left] = i
-			out, rem := search(trace+strconv.Itoa(i), depth+1, opIndex+1, values["w"], values["x"], values["y"], values["z"])
+			out, rem := search(trace+strconv.Itoa(i), depth+1, opIndex+1, values["w"], values["x"], values["y"], values["z"], inc)
 
 			if out {
-				fmt.Printf("%d %d %d %d -> %s\n", wValue, xValue, yValue, zValue, trace)
+				// fmt.Printf("%d %d %d %d -> %s\n", wValue, xValue, yValue, zValue, trace)
 				return out, strconv.Itoa(i) + rem
 			}
 		}
@@ -114,7 +128,7 @@ func search(trace string, depth, opIndex, wValue, xValue, yValue, zValue int) (b
 		}
 	}
 
-	out, rem := search(trace, depth+1, opIndex+1, values["w"], values["x"], values["y"], values["z"])
+	out, rem := search(trace, depth+1, opIndex+1, values["w"], values["x"], values["y"], values["z"], inc)
 	DP[s] = outcome{out, rem}
 	return out, rem
 }
@@ -225,7 +239,11 @@ func reduce(n int64) int64 {
 func main() {
 	commands = getInput("input.txt")
 
-	search("", 0, 0, 0, 0, 0, 0)
+	search("", 0, 0, 0, 0, 0, 0, false)
+	fmt.Printf("Part 1: %v\n", found[0])
 
-	fmt.Printf("Part 1: %v\n", found)
+	DP = make(map[state]outcome)
+	found = []string{}
+	search("", 0, 0, 0, 0, 0, 0, true)
+	fmt.Printf("Part 2: %v\n", found[0])
 }

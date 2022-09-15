@@ -103,11 +103,11 @@ func findIntersection(c1, c2 cube) *cube {
 		return nil
 	}
 
-	x0 := int64(math.Min(float64(c1.x.lower), float64(c2.x.lower)))
+	x0 := int64(math.Max(float64(c1.x.lower), float64(c2.x.lower)))
 	x1 := int64(math.Min(float64(c1.x.upper), float64(c2.x.upper)))
-	y0 := int64(math.Min(float64(c1.y.lower), float64(c2.y.lower)))
+	y0 := int64(math.Max(float64(c1.y.lower), float64(c2.y.lower)))
 	y1 := int64(math.Min(float64(c1.y.upper), float64(c2.y.upper)))
-	z0 := int64(math.Min(float64(c1.z.lower), float64(c2.z.lower)))
+	z0 := int64(math.Max(float64(c1.z.lower), float64(c2.z.lower)))
 	z1 := int64(math.Min(float64(c1.z.upper), float64(c2.z.upper)))
 
 	status := c1.value * c2.value
@@ -129,10 +129,7 @@ func getVolume(c cube) int64 {
 	return (c.x.upper - c.x.lower + 1) * (c.y.upper - c.y.lower + 1) * (c.z.upper - c.z.lower + 1)
 }
 
-func main() {
-	lines := readFile("input.txt")
-	steps := parseInput(lines)
-
+func calculate(steps []cube) int64 {
 	var cubes []cube
 
 	for _, step := range steps {
@@ -153,19 +150,47 @@ func main() {
 	}
 
 	res := int64(0)
-	pos := int64(0)
-	neg := int64(0)
 
 	for _, cube := range cubes {
-		if cube.value == 1 {
-			pos += getVolume(cube) * 1
-		} else {
-			neg += getVolume(cube) * -1
-		}
 		res += getVolume(cube) * cube.value
 	}
 
-	fmt.Printf("Pos: %d, Neg: %d\n", pos, neg)
+	return res
+}
 
-	fmt.Printf("Part 2: %d\n", res)
+func main() {
+	lines := readFile("input.txt")
+	steps := parseInput(lines)
+
+	var subset []cube
+
+	for _, step := range steps {
+		if step.x.lower < -50 {
+			continue
+		}
+		if step.x.upper > 50 {
+			continue
+		}
+		if step.y.lower < -50 {
+			continue
+		}
+		if step.y.upper > 50 {
+			continue
+		}
+		if step.z.lower < -50 {
+			continue
+		}
+		if step.z.upper > 50 {
+			continue
+		}
+		subset = append(subset, step)
+	}
+
+	output := calculate(subset)
+
+	fmt.Printf("Part 1: %d\n", output)
+
+	output = calculate(steps)
+
+	fmt.Printf("Part 2: %d\n", output)
 }
